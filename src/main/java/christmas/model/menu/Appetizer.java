@@ -1,22 +1,22 @@
-package christmas.model;
+package christmas.model.menu;
 
 import java.util.Arrays;
 
-public enum Drink implements Menu {
-    ZERO_COKE("제로콜라", 3000),
-    RED_WINE("레드와인", 60000),
-    CHAMPAGNE("샴페인", 25000);
+public enum Appetizer implements Menu {
+    MUSHROOM_SOUP("양송이수프", 6000),
+    TAPAS("타파스", 5500),
+    CAESAR_SALAD("시저샐러드", 8000);
 
     private final String name;
     private final int price;
 
-    private Drink(String name, int price) {
+    Appetizer(String name, int price) {
         this.name = name;
         this.price = price;
     }
 
-    public static boolean isDrink(String line) {
-        return Arrays.stream(Drink.values())
+    public static boolean contains(String line) {
+        return Arrays.stream(Appetizer.values())
                 .anyMatch(i -> i.getName().equals(line));
     }
 

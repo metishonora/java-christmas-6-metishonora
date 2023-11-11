@@ -1,4 +1,4 @@
-package christmas.model;
+package christmas.model.menu;
 
 public interface Menu {
     String getName();

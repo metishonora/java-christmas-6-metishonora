@@ -1,4 +1,4 @@
-package christmas.model;
+package christmas.model.menu;
 
 import java.util.Arrays;
 
@@ -17,7 +17,7 @@ public enum Maindish implements Menu {
         this.price = price;
     }
 
-    public static boolean isMaindish(String line) {
+    public static boolean contains(String line) {
         return Arrays.stream(Maindish.values())
                 .anyMatch(i -> i.getName().equals(line));
     }
