@@ -3,12 +3,28 @@ package christmas;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import christmas.model.menu.Appetizer;
+import christmas.model.menu.Dessert;
+import christmas.model.menu.Maindish;
+import christmas.model.menu.Menu;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class LogicTest {
-    private final String dateException = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
+    private static final String DATE_EXCEPTION = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
+    private static final String MENU_EXCEPTION = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
+
+    private static Stream<Arguments> provideMenuForTest() {
+        return Stream.of(
+                Arguments.of("양송이수프", Appetizer.class),
+                Arguments.of("바비큐립", Maindish.class),
+                Arguments.of("초코케이스", Dessert.class)
+        );
+    }
 
     @DisplayName("빈 방문 날짜")
     @ValueSource(strings = {"", " "})
@@ -16,7 +32,7 @@ class LogicTest {
     void emptyDate(String input) {
         assertThatThrownBy(() -> Logic.readDate(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(dateException);
+                .hasMessageContaining(DATE_EXCEPTION);
     }
 
     @DisplayName("정수가 아닌 방문 날짜")
@@ -25,9 +41,8 @@ class LogicTest {
     void notIntegerDate(String input) {
         assertThatThrownBy(() -> Logic.readDate(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(dateException);
+                .hasMessageContaining(DATE_EXCEPTION);
     }
-
 
     @DisplayName("범위를 벗어나는 방문 날짜")
     @ValueSource(strings = {"0", "32"})
@@ -35,7 +50,7 @@ class LogicTest {
     void tooSmallOrLargeDate(String input) {
         assertThatThrownBy(() -> Logic.readDate(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(dateException);
+                .hasMessageContaining(DATE_EXCEPTION);
     }
 
     @DisplayName("정상 날짜")
@@ -44,5 +59,22 @@ class LogicTest {
     void ordinalDate(String input) {
         assertThat(Logic.readDate(input))
                 .isEqualTo(Integer.parseInt(input));
+    }
+
+    @DisplayName("메뉴판에 없는 메뉴")
+    @ValueSource(strings = {"라면", "김치찌개"})
+    @ParameterizedTest
+    void notExistingMenu(String input) {
+        assertThatThrownBy(() -> Logic.readSingleMenu(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(MENU_EXCEPTION);
+    }
+
+    @DisplayName("정상 메뉴")
+    @MethodSource("provideMenuForTest")
+    @ParameterizedTest
+    void testReadSingleMenu(String input, Class<? extends Menu> expectedClass) {
+        Menu menu = Logic.readSingleMenu(input);
+        assertThat(expectedClass).isEqualTo(menu.getClass());
     }
 }
