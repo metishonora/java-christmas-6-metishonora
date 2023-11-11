@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import christmas.model.menu.Appetizer;
 import christmas.model.menu.Dessert;
+import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
 import java.util.stream.Stream;
@@ -22,7 +23,8 @@ class LogicTest {
         return Stream.of(
                 Arguments.of("양송이수프", Appetizer.class),
                 Arguments.of("바비큐립", Maindish.class),
-                Arguments.of("초코케이스", Dessert.class)
+                Arguments.of("초코케이크", Dessert.class),
+                Arguments.of("샴페인", Drink.class)
         );
     }
 

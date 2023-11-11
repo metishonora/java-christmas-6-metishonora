@@ -5,6 +5,7 @@ import christmas.model.menu.Dessert;
 import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
+import java.util.stream.Stream;
 
 public class Logic {
     private static final String DATE_EXCEPTION = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
@@ -25,17 +26,14 @@ public class Logic {
     }
 
     public static Menu readSingleMenu(String line) {
-        if (Appetizer.contains((line))) {
-            return Appetizer.valueOf(line);
-        }
-        if (Maindish.contains(line)) {
-            return Maindish.valueOf(line);
-        }
-        if (Dessert.contains(line)) {
-            return Dessert.valueOf(line);
-        }
-        if (Drink.contains(line)) {
-            return Drink.valueOf(line);
+        Menu[] menus = Stream.of(Appetizer.values(), Maindish.values(), Dessert.values(), Drink.values())
+                .flatMap(Stream::of)
+                .toArray(Menu[]::new);
+
+        for (Menu menu : menus) {
+            if (menu.contains(line)) {
+                return menu;
+            }
         }
         throw new IllegalArgumentException(MENU_EXCEPTION);
     }

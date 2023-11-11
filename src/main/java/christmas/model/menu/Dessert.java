@@ -15,7 +15,8 @@ public enum Dessert implements Menu {
         this.price = price;
     }
 
-    public static boolean contains(String line) {
+    @Override
+    public boolean contains(String line) {
         return Arrays.stream(Dessert.values())
                 .anyMatch(i -> i.getName().equals(line));
     }

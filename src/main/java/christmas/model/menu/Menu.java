@@ -4,4 +4,6 @@ public interface Menu {
     String getName();
 
     Integer getPrice();
+
+    boolean contains(String line);
 }
