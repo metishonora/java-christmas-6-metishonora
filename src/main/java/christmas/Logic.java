@@ -33,12 +33,10 @@ public class Logic {
                 .flatMap(Stream::of)
                 .collect(Collectors.toList());
 
-        for (Menu menu : menus) {
-            if (menu.contains(line)) {
-                return menu;
-            }
-        }
-        throw new IllegalArgumentException(MENU_EXCEPTION);
+        return menus.stream()
+                .filter(i -> i.contains(line))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(MENU_EXCEPTION));
     }
 
 }
