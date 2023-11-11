@@ -5,6 +5,8 @@ import christmas.model.menu.Dessert;
 import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Logic {
@@ -26,9 +28,10 @@ public class Logic {
     }
 
     public static Menu readSingleMenu(String line) {
-        Menu[] menus = Stream.of(Appetizer.values(), Maindish.values(), Dessert.values(), Drink.values())
+        // 주의: 인터페이스 Menu의 새로운 구현 클래스가 추가될 경우, 이 코드에도 추가되어야 합니다.
+        List<Menu> menus = Stream.of(Appetizer.values(), Maindish.values(), Dessert.values(), Drink.values())
                 .flatMap(Stream::of)
-                .toArray(Menu[]::new);
+                .collect(Collectors.toList());
 
         for (Menu menu : menus) {
             if (menu.contains(line)) {

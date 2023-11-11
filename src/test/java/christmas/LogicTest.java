@@ -19,7 +19,7 @@ class LogicTest {
     private static final String DATE_EXCEPTION = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
     private static final String MENU_EXCEPTION = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
 
-    private static Stream<Arguments> provideMenuForTest() {
+    private static Stream<Arguments> menuSubclassProvider() {
         return Stream.of(
                 Arguments.of("양송이수프", Appetizer.class),
                 Arguments.of("바비큐립", Maindish.class),
@@ -58,7 +58,7 @@ class LogicTest {
     @DisplayName("정상 날짜")
     @ValueSource(strings = {"1", "10", "31"})
     @ParameterizedTest
-    void ordinalDate(String input) {
+    void normalDate(String input) {
         assertThat(Logic.readDate(input))
                 .isEqualTo(Integer.parseInt(input));
     }
@@ -73,9 +73,9 @@ class LogicTest {
     }
 
     @DisplayName("정상 메뉴")
-    @MethodSource("provideMenuForTest")
+    @MethodSource("menuSubclassProvider")
     @ParameterizedTest
-    void testReadSingleMenu(String input, Class<? extends Menu> expectedClass) {
+    void normalMenu(String input, Class<? extends Menu> expectedClass) {
         Menu menu = Logic.readSingleMenu(input);
         assertThat(expectedClass).isEqualTo(menu.getClass());
     }
