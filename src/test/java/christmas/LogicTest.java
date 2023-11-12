@@ -67,7 +67,7 @@ class LogicTest {
     @ValueSource(strings = {"라면", "김치찌개"})
     @ParameterizedTest
     void notExistingMenu(String input) {
-        assertThatThrownBy(() -> Logic.readSingleMenu(input))
+        assertThatThrownBy(() -> Logic.readMenuName(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(MENU_EXCEPTION);
     }
@@ -76,7 +76,25 @@ class LogicTest {
     @MethodSource("menuSubclassProvider")
     @ParameterizedTest
     void normalMenu(String input, Class<? extends Menu> expectedClass) {
-        Menu menu = Logic.readSingleMenu(input);
+        Menu menu = Logic.readMenuName(input);
         assertThat(expectedClass).isEqualTo(menu.getClass());
+    }
+
+    @DisplayName("입력 형식이 다른 주문")
+    @ValueSource(strings = {"양송이수프-1-2", "초코케이크 1", "-1-아이스크림", "5-바비큐립", "-", ""})
+    @ParameterizedTest
+    void illegalFormatOrder(String input) {
+        assertThatThrownBy(() -> Logic.readSingleOrder(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(MENU_EXCEPTION);
+    }
+
+    @DisplayName("개수가 틀린 주문")
+    @ValueSource(strings = {"제로콜라-0.1", "제로콜라-0, 제로콜라-a, 제로콜라--3, 제로콜라-987654321987"})
+    @ParameterizedTest
+    void illegalCountOrder(String input) {
+        assertThatThrownBy(() -> Logic.readSingleOrder(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(MENU_EXCEPTION);
     }
 }

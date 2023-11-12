@@ -6,10 +6,8 @@ import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
 import christmas.model.order.Order;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Logic {
@@ -27,17 +25,24 @@ public class Logic {
         }
     }
 
-    public static Menu readSingleMenu(String line) {
-        // 주의: 인터페이스 Menu의 새로운 구현 클래스가 추가될 경우, 이 코드에도 추가되어야 합니다.
-        List<Menu> menus = Stream.of(Appetizer.values(), Maindish.values(), Dessert.values(), Drink.values())
-                .flatMap(Stream::of)
-                .collect(Collectors.toList());
-
+    public static Menu readMenuName(String line) {
         // 주의: 같은 이름의 메뉴가 있을 경우, 먼저 찾은 메뉴를 반환합니다.
-        return menus.stream()
+        // 주의: 인터페이스 Menu의 새로운 구현 클래스가 추가될 경우, 아래 목록에도 추가해야 합니다.
+        return Stream.of(Appetizer.values(), Maindish.values(), Dessert.values(), Drink.values())
+                .flatMap(Stream::of)
                 .filter(i -> i.contains(line))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(MENU_EXCEPTION));
+    }
+
+    public static Integer readCount(String token) {
+        try {
+            return Optional.of(Integer.parseInt(token))
+                    .filter(i -> i > 0)
+                    .orElseThrow();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
     }
 
     public static Order readSingleOrder(String line) {
@@ -45,13 +50,10 @@ public class Logic {
         if (tokens.length != 2) {
             throw new IllegalArgumentException(MENU_EXCEPTION);
         }
-        try {
-            Menu menu = readSingleMenu(tokens[0]);
-            Integer count = Integer.parseInt(tokens[1]);
-            return new Order(menu, count);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(MENU_EXCEPTION);
-        }
-    }
 
+        Menu menu = readMenuName(tokens[0]);
+        Integer count = readCount(tokens[1]);
+
+        return new Order(menu, count);
+    }
 }
