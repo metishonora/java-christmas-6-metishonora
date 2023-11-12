@@ -32,7 +32,7 @@ public class Logic {
         // 주의: 인터페이스 Menu의 새로운 구현 클래스가 추가될 경우, 아래 목록에도 추가해야 합니다.
         return Stream.of(Appetizer.values(), Maindish.values(), Dessert.values(), Drink.values())
                 .flatMap(Stream::of)
-                .filter(i -> i.contains(line))
+                .filter(i -> i.getName().equals(line))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(MENU_EXCEPTION));
     }
