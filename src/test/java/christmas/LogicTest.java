@@ -22,19 +22,26 @@ class LogicTest {
 
     private static Stream<Arguments> menuSubclassProvider() {
         return Stream.of(
-                Arguments.of("양송이수프", Appetizer.class),
-                Arguments.of("바비큐립", Maindish.class),
-                Arguments.of("초코케이크", Dessert.class),
-                Arguments.of("샴페인", Drink.class)
+                Arguments.of("양송이수프", Appetizer.class, "양송이수프"),
+                Arguments.of("바비큐립", Maindish.class, "바비큐립"),
+                Arguments.of("초코케이크", Dessert.class, "초코케이크"),
+                Arguments.of("샴페인", Drink.class, "샴페인")
         );
     }
 
     private static Stream<Arguments> normalOrderProvider() {
         return Stream.of(
-                Arguments.of("양송이수프-1", Appetizer.class, 1),
-                Arguments.of("바비큐립-2", Maindish.class, 2),
-                Arguments.of("초코케이크-3", Dessert.class, 3),
-                Arguments.of("제로콜라-4", Drink.class, 4)
+                Arguments.of("양송이수프-1", Appetizer.class, 1, "[양송이수프-1]"),
+                Arguments.of("바비큐립-2", Maindish.class, 2, "[바비큐립-2]"),
+                Arguments.of("초코케이크-3", Dessert.class, 3, "[초코케이크-3]"),
+                Arguments.of("제로콜라-4", Drink.class, 4, "[제로콜라-4]")
+        );
+    }
+
+    private static Stream<Arguments> normalOrdersProvider() {
+        return Stream.of(
+                Arguments.of("양송이수프-1,바비큐립-2,초코케이크-3", "[[양송이수프-1], [바비큐립-2], [초코케이크-3]]"),
+                Arguments.of("제로콜라-4,해산물파스타-8", "[[제로콜라-4], [해산물파스타-8]]")
         );
     }
 
@@ -85,9 +92,10 @@ class LogicTest {
     @DisplayName("정상 메뉴")
     @MethodSource("menuSubclassProvider")
     @ParameterizedTest
-    void normalMenu(String input, Class<? extends Menu> expectedClass) {
+    void normalMenu(String input, Class<? extends Menu> expectedClass, String expectedName) {
         Menu menu = Logic.readMenuName(input);
         assertThat(expectedClass).isEqualTo(menu.getClass());
+        assertThat(expectedName).isEqualTo(menu.getName());
     }
 
     @DisplayName("입력 형식이 다른 주문")
@@ -111,10 +119,12 @@ class LogicTest {
     @DisplayName("정상 단일 주문")
     @MethodSource("normalOrderProvider")
     @ParameterizedTest
-    void normalSingleOrder(String input, Class<? extends Menu> expectedClass, Integer expectedCount) {
+    void normalSingleOrder(String input, Class<? extends Menu> expectedClass, Integer expectedCount,
+                           String expectedAnswer) {
         Order order = Logic.readSingleOrder(input);
         assertThat(expectedClass).isEqualTo(order.getMenu().getClass());
         assertThat(expectedCount).isEqualTo(order.getCount());
+        assertThat(expectedAnswer).isEqualTo(order.toString());
     }
 
     @DisplayName("중복 주문")
@@ -142,5 +152,13 @@ class LogicTest {
         assertThatThrownBy(() -> Logic.readOrders(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(MENU_EXCEPTION);
+    }
+
+    @DisplayName("정상 전체 주문")
+    @MethodSource("normalOrdersProvider")
+    @ParameterizedTest
+    void normalOrders(String line, String answer) {
+        assertThat(Logic.readOrders(line).toString())
+                .isEqualTo(answer);
     }
 }
