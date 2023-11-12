@@ -15,12 +15,17 @@ import java.util.stream.Stream;
 public class Logic {
     private static final String DATE_EXCEPTION = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
     private static final String MENU_EXCEPTION = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
+    private static final String MENU_SEPARATOR = "-";
+    private static final String ORDER_SEPARATOR = ",";
+    private static final Integer START_OF_MONTH = 1;
+    private static final Integer END_OF_MONTH = 31;
+    private static final Integer MAX_ORDER = 20;
 
     public static int readDate(String line) {
         try {
             return Optional.ofNullable(line)
                     .map(Integer::parseInt)
-                    .filter(i -> i >= 1 && i <= 31)
+                    .filter(i -> i >= START_OF_MONTH && i <= END_OF_MONTH)
                     .orElseThrow();
         } catch (NumberFormatException | NoSuchElementException e) {
             throw new IllegalArgumentException(DATE_EXCEPTION);
@@ -48,7 +53,7 @@ public class Logic {
     }
 
     public static Order readSingleOrder(String line) {
-        String[] tokens = line.split("-");
+        String[] tokens = line.split(MENU_SEPARATOR);
         if (tokens.length != 2) {
             throw new IllegalArgumentException(MENU_EXCEPTION);
         }
@@ -60,7 +65,7 @@ public class Logic {
     }
 
     public static List<Order> readOrders(String line) {
-        List<Order> orders = Arrays.stream(line.split(","))
+        List<Order> orders = Arrays.stream(line.split(ORDER_SEPARATOR))
                 .map(Logic::readSingleOrder)
                 .toList();
 
@@ -85,7 +90,7 @@ public class Logic {
                 .mapToInt(Order::getCount)
                 .sum();
 
-        if (totalOrderCount > 20) {
+        if (totalOrderCount > MAX_ORDER) {
             throw new IllegalArgumentException(MENU_EXCEPTION);
         }
     }
