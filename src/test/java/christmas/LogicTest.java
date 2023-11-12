@@ -8,6 +8,7 @@ import christmas.model.menu.Dessert;
 import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
+import christmas.model.order.Order;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,15 @@ class LogicTest {
                 Arguments.of("바비큐립", Maindish.class),
                 Arguments.of("초코케이크", Dessert.class),
                 Arguments.of("샴페인", Drink.class)
+        );
+    }
+
+    private static Stream<Arguments> normalOrderProvider() {
+        return Stream.of(
+                Arguments.of("양송이수프-1", Appetizer.class, 1),
+                Arguments.of("바비큐립-2", Maindish.class, 2),
+                Arguments.of("초코케이크-3", Dessert.class, 3),
+                Arguments.of("제로콜라-4", Drink.class, 4)
         );
     }
 
@@ -81,7 +91,7 @@ class LogicTest {
     }
 
     @DisplayName("입력 형식이 다른 주문")
-    @ValueSource(strings = {"양송이수프-1-2", "초코케이크 1", "-1-아이스크림", "5-바비큐립", "-", ""})
+    @ValueSource(strings = {"양송이수프-1-2", "초코케이크 1", "-1", "5-바비큐립", "제로콜라--10", "제로콜라-"})
     @ParameterizedTest
     void illegalFormatOrder(String input) {
         assertThatThrownBy(() -> Logic.readSingleOrder(input))
@@ -94,6 +104,42 @@ class LogicTest {
     @ParameterizedTest
     void illegalCountOrder(String input) {
         assertThatThrownBy(() -> Logic.readSingleOrder(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(MENU_EXCEPTION);
+    }
+
+    @DisplayName("정상 단일 주문")
+    @MethodSource("normalOrderProvider")
+    @ParameterizedTest
+    void normalSingleOrder(String input, Class<? extends Menu> expectedClass, Integer expectedCount) {
+        Order order = Logic.readSingleOrder(input);
+        assertThat(expectedClass).isEqualTo(order.getMenu().getClass());
+        assertThat(expectedCount).isEqualTo(order.getCount());
+    }
+
+    @DisplayName("중복 주문")
+    @ValueSource(strings = {"양송이수프-1,양송이수프-2", "초코케이크-1,초코케이크-1", "바비큐립-1,양송이수프-2,바비큐립-3"})
+    @ParameterizedTest
+    void duplicateOrder(String input) {
+        assertThatThrownBy(() -> Logic.readOrders(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(MENU_EXCEPTION);
+    }
+
+    @DisplayName("20개 초과 주문")
+    @ValueSource(strings = {"양송이수프-20,제로콜라-1", "양송이수프-10,제로콜라-10,바비큐립-1"})
+    @ParameterizedTest
+    void tooManyOrder(String input) {
+        assertThatThrownBy(() -> Logic.readOrders(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(MENU_EXCEPTION);
+    }
+
+    @DisplayName("음료만 주문")
+    @ValueSource(strings = {"제로콜라-1,샴페인-1", "레드와인-10"})
+    @ParameterizedTest
+    void onlyDrinkOrder(String input) {
+        assertThatThrownBy(() -> Logic.readOrders(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(MENU_EXCEPTION);
     }

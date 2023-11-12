@@ -6,6 +6,8 @@ import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
 import christmas.model.order.Order;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -55,5 +57,38 @@ public class Logic {
         Integer count = readCount(tokens[1]);
 
         return new Order(menu, count);
+    }
+
+    public static List<Order> readOrders(String line) {
+        List<Order> orders = Arrays.stream(line.split(","))
+                .map(Logic::readSingleOrder)
+                .toList();
+
+        int distinctOrderCount = orders.stream()
+                .map(Order::getMenu)
+                .distinct()
+                .toList()
+                .size();
+
+        if (distinctOrderCount != orders.size()) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
+
+        int totalOrderCount = orders.stream()
+                .mapToInt(Order::getCount)
+                .sum();
+
+        if (totalOrderCount > 20) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
+
+        boolean hasNonDrinkOrder = orders.stream()
+                .anyMatch(i -> !(i.getMenu() instanceof Drink));
+
+        if (!hasNonDrinkOrder) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
+
+        return orders;
     }
 }

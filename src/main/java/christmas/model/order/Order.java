@@ -10,4 +10,17 @@ public class Order {
         this.menu = menu;
         this.count = count;
     }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    @Override
+    public String toString() {
+        return "[%s-%d]".formatted(menu.getName(), count);
+    }
 }
