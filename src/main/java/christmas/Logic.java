@@ -64,6 +64,33 @@ public class Logic {
                 .map(Logic::readSingleOrder)
                 .toList();
 
+        validateOrdersDistinct(orders);
+        validateOrdersSize(orders);
+        validateOrdersWithNonDrink(orders);
+
+        return orders;
+    }
+
+    private static void validateOrdersWithNonDrink(List<Order> orders) {
+        boolean hasNonDrinkOrder = orders.stream()
+                .anyMatch(i -> !(i.getMenu() instanceof Drink));
+
+        if (!hasNonDrinkOrder) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
+    }
+
+    private static void validateOrdersSize(List<Order> orders) {
+        int totalOrderCount = orders.stream()
+                .mapToInt(Order::getCount)
+                .sum();
+
+        if (totalOrderCount > 20) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
+    }
+
+    private static void validateOrdersDistinct(List<Order> orders) {
         int distinctOrderCount = orders.stream()
                 .map(Order::getMenu)
                 .distinct()
@@ -73,22 +100,5 @@ public class Logic {
         if (distinctOrderCount != orders.size()) {
             throw new IllegalArgumentException(MENU_EXCEPTION);
         }
-
-        int totalOrderCount = orders.stream()
-                .mapToInt(Order::getCount)
-                .sum();
-
-        if (totalOrderCount > 20) {
-            throw new IllegalArgumentException(MENU_EXCEPTION);
-        }
-
-        boolean hasNonDrinkOrder = orders.stream()
-                .anyMatch(i -> !(i.getMenu() instanceof Drink));
-
-        if (!hasNonDrinkOrder) {
-            throw new IllegalArgumentException(MENU_EXCEPTION);
-        }
-
-        return orders;
     }
 }
