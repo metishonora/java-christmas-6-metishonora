@@ -4,9 +4,9 @@ import christmas.model.day.Day;
 import christmas.model.order.EntireOrder;
 
 public interface Event {
-    public static int MINUMUM_PURCHASE = 10_000;
+    int MINUMUM_PURCHASE = 10_000;
 
-    public static boolean isEligibleForEntireEvent(EntireOrder orders) {
+    static boolean isEligibleForEntireEvent(EntireOrder orders) {
         return orders.calculateEntirePrice() >= MINUMUM_PURCHASE;
     }
 
