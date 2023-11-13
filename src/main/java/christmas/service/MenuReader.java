@@ -5,6 +5,7 @@ import christmas.model.menu.Dessert;
 import christmas.model.menu.Drink;
 import christmas.model.menu.Maindish;
 import christmas.model.menu.Menu;
+import christmas.model.order.EntireOrder;
 import christmas.model.order.Order;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +50,7 @@ public class MenuReader {
         return new Order(menu, count);
     }
 
-    public static List<Order> readOrders(String line) {
+    public static EntireOrder readOrders(String line) {
         List<Order> orders = Arrays.stream(line.split(ORDER_SEPARATOR))
                 .map(MenuReader::readSingleOrder)
                 .toList();
@@ -58,7 +59,7 @@ public class MenuReader {
         validateOrdersSize(orders);
         validateOrdersWithNonDrink(orders);
 
-        return orders;
+        return new EntireOrder(orders);
     }
 
     private static void validateOrdersWithNonDrink(List<Order> orders) {
