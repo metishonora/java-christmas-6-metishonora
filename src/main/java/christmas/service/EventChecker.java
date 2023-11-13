@@ -1,5 +1,6 @@
 package christmas.service;
 
+import christmas.dto.EventDto;
 import christmas.model.badge.Badge;
 import christmas.model.day.Day;
 import christmas.model.event.ChampagneGiveawayEvent;
@@ -24,6 +25,11 @@ public class EventChecker {
                 new WeekendDiscountEvent());
     }
 
+    public String checkGiveawayEvent(EntireOrder orders, Day day) {
+        // 주의: 이벤트 구현체의 순서가 변경될 경우, 이 메서드의 인덱스도 변경되어야 합니다.
+        return ((ChampagneGiveawayEvent) events.get(0)).giveAwayEventResult(orders, day);
+    }
+
     public Integer calculateTotalBenefitOf(EntireOrder orders, Day day) {
         return events.stream()
                 .mapToInt(i -> i.getEventBenefitAmount(orders, day))
@@ -36,5 +42,24 @@ public class EventChecker {
 
     public Badge checkBadge(EntireOrder orders, Day day) {
         return Badge.getBadgeFrom(calculateTotalBenefitOf(orders, day));
+    }
+
+    public EventDto createDto(EntireOrder orders, Day day) {
+        String giveawayEventResult = checkGiveawayEvent(orders, day);
+        List<String> eventList = events.stream()
+                .map(Event::getEventName)
+                .toList();
+        List<Integer> benefitAmount = events.stream()
+                .map(i -> i.getEventBenefitAmount(orders, day))
+                .toList();
+
+        return new EventDto(giveawayEventResult,
+                eventList,
+                benefitAmount,
+                events.size(),
+                calculateTotalBenefitOf(orders, day),
+                calculateFinalPrice(orders, day),
+                checkBadge(orders, day).getName()
+        );
     }
 }

@@ -1,7 +1,9 @@
 package christmas.model.order;
 
+import christmas.dto.EntireOrderDto;
 import christmas.model.menu.Dessert;
 import christmas.model.menu.Maindish;
+import java.util.Collections;
 import java.util.List;
 
 public class EntireOrder {
@@ -29,6 +31,10 @@ public class EntireOrder {
                 .filter(i -> i.getMenu() instanceof Maindish)
                 .mapToInt(Order::getCount)
                 .sum();
+    }
+
+    public EntireOrderDto createDto() {
+        return new EntireOrderDto(Collections.unmodifiableList(orders), calculateEntirePrice());
     }
 
     @Override
