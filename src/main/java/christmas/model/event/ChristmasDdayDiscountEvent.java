@@ -8,10 +8,11 @@ public class ChristmasDdayDiscountEvent implements Event {
     private static final String CHRISTMAS_DDAY_DISCOUNT_EVENT = "크리스마스 디데이 할인";
     private static final int BASIC_DISCOUNT = 1_000;
     private static final int ADDED_EACH_DAY = 100;
+    private static final int DAY_WHEN_EVENT_ENDS = 26;
 
     @Override
     public boolean isEligible(EntireOrder orders, Day day) {
-        return Event.isEligibleForEntireEvent(orders) && !day.isDayAfter(new December2023(25));
+        return Event.isEligibleForEntireEvent(orders) && day.isDayAfter(new December2023(DAY_WHEN_EVENT_ENDS));
     }
 
     @Override
