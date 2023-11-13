@@ -9,7 +9,7 @@ public class ChampagneGiveawayEvent implements Event {
     private static final String GIVEAWAY_EVENT_RESULT = "샴페인 1개";
     private static final String NO_PRIZE = "없음";
 
-    private static final int MINUMUM_PURCHASE = 120_000;
+    private static final int MINIMUM_PURCHASE = 120_000;
 
     public String giveAwayEventResult(EntireOrder orders, Day day) {
         if (isEligible(orders, day)) {
@@ -20,7 +20,7 @@ public class ChampagneGiveawayEvent implements Event {
 
     @Override
     public boolean isEligible(EntireOrder orders, Day day) {
-        return Event.isEligibleForEntireEvent(orders) && orders.calculateEntirePrice() >= MINUMUM_PURCHASE;
+        return Event.isEligibleForEntireEvent(orders) && orders.calculateEntirePrice() >= MINIMUM_PURCHASE;
     }
 
     @Override

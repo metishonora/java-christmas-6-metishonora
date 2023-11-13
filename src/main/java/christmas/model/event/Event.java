@@ -4,10 +4,10 @@ import christmas.model.day.Day;
 import christmas.model.order.EntireOrder;
 
 public interface Event {
-    int MINUMUM_PURCHASE = 10_000;
+    int MINIMUM_PURCHASE_FOR_ENTIRE_EVENT = 10_000;
 
     static boolean isEligibleForEntireEvent(EntireOrder orders) {
-        return orders.calculateEntirePrice() >= MINUMUM_PURCHASE;
+        return orders.calculateEntirePrice() >= MINIMUM_PURCHASE_FOR_ENTIRE_EVENT;
     }
 
     boolean isEligible(EntireOrder orders, Day day);
