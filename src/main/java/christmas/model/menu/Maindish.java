@@ -12,7 +12,7 @@ public enum Maindish implements Menu {
     private final String name;
     private final int price;
 
-    private Maindish(String name, int price) {
+    Maindish(String name, int price) {
         this.name = name;
         this.price = price;
     }
