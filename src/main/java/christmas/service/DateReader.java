@@ -8,7 +8,7 @@ public class DateReader {
     private static final Integer START_OF_MONTH = 1;
     private static final Integer END_OF_MONTH = 31;
 
-    public static int readDate(String line) {
+    public static Integer readDate(String line) {
         try {
             return Optional.ofNullable(line)
                     .map(Integer::parseInt)
