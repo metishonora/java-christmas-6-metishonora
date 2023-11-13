@@ -1,5 +1,6 @@
 package christmas.model.event;
 
+import christmas.model.day.Day;
 import christmas.model.order.EntireOrder;
 
 public interface Event {
@@ -7,9 +8,9 @@ public interface Event {
         return orders.calculateEntirePrice() >= 10000;
     }
 
-    boolean isEligible(EntireOrder orders);
+    boolean isEligible(EntireOrder orders, Day day);
 
     String getEventName();
 
-    Integer getEventBenefitAmount();
+    Integer getEventBenefitAmount(EntireOrder orders, Day day);
 }
