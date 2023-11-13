@@ -5,7 +5,7 @@ import java.util.List;
 public record December2023(Integer day) implements Day {
     public static final Integer START_OF_MONTH = 1;
     public static final Integer END_OF_MONTH = 31;
-    private static final Integer MONTH = 12;
+    public static final Integer MONTH = 12;
     private static final List<Integer> WEEKEND = List.of(
             1, 2, 8, 9, 15, 16, 22, 23, 29, 30
     );
