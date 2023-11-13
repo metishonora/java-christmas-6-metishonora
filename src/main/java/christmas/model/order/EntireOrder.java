@@ -17,16 +17,18 @@ public class EntireOrder {
                 .sum();
     }
 
-    public long countDessert() {
+    public Integer countDessert() {
         return orders.stream()
                 .filter(i -> i.getMenu() instanceof Dessert)
-                .count();
+                .mapToInt(Order::getCount)
+                .sum();
     }
 
-    public long countMaindish() {
+    public Integer countMaindish() {
         return orders.stream()
                 .filter(i -> i.getMenu() instanceof Maindish)
-                .count();
+                .mapToInt(Order::getCount)
+                .sum();
     }
 
     @Override
