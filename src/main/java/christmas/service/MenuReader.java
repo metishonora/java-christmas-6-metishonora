@@ -64,7 +64,7 @@ public class MenuReader {
 
     private static void validateOrdersWithNonDrink(List<Order> orders) {
         boolean hasNonDrinkOrder = orders.stream()
-                .anyMatch(i -> !(i.getMenu() instanceof Drink));
+                .anyMatch(i -> !(i.menu() instanceof Drink));
 
         if (!hasNonDrinkOrder) {
             throw new IllegalArgumentException(MENU_EXCEPTION);
@@ -73,7 +73,7 @@ public class MenuReader {
 
     private static void validateOrdersSize(List<Order> orders) {
         int totalOrderCount = orders.stream()
-                .mapToInt(Order::getCount)
+                .mapToInt(Order::count)
                 .sum();
 
         if (totalOrderCount > MAX_ORDER) {
@@ -83,7 +83,7 @@ public class MenuReader {
 
     private static void validateOrdersDistinct(List<Order> orders) {
         int distinctOrderCount = orders.stream()
-                .map(Order::getMenu)
+                .map(Order::menu)
                 .distinct()
                 .toList()
                 .size();

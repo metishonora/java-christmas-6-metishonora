@@ -50,7 +50,7 @@ public class OutputView {
     private void printEntireOrder(EntireOrderDto orderDto) {
         System.out.println(RESULT_ORDERS);
         orderDto.orders()
-                .forEach(order -> System.out.printf(EACH_ORDER, order.getMenu(), order.getCount()));
+                .forEach(order -> System.out.printf(EACH_ORDER, order.menu(), order.count()));
     }
 
     private void printPriceBeforeDiscount(EntireOrderDto orderDto) {

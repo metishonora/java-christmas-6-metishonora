@@ -86,8 +86,8 @@ class MenuReaderTest {
     void normalSingleOrder(String input, Class<? extends Menu> expectedClass, Integer expectedCount,
                            String expectedAnswer) {
         Order order = MenuReader.readSingleOrder(input);
-        assertThat(expectedClass).isEqualTo(order.getMenu().getClass());
-        assertThat(expectedCount).isEqualTo(order.getCount());
+        assertThat(expectedClass).isEqualTo(order.menu().getClass());
+        assertThat(expectedCount).isEqualTo(order.count());
         assertThat(expectedAnswer).isEqualTo(order.toString());
     }
 

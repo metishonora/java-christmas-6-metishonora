@@ -21,15 +21,15 @@ public class EntireOrder {
 
     public Integer countDessert() {
         return orders.stream()
-                .filter(i -> i.getMenu() instanceof Dessert)
-                .mapToInt(Order::getCount)
+                .filter(i -> i.menu() instanceof Dessert)
+                .mapToInt(Order::count)
                 .sum();
     }
 
     public Integer countMaindish() {
         return orders.stream()
-                .filter(i -> i.getMenu() instanceof Maindish)
-                .mapToInt(Order::getCount)
+                .filter(i -> i.menu() instanceof Maindish)
+                .mapToInt(Order::count)
                 .sum();
     }
 
