@@ -5,6 +5,7 @@ import christmas.model.order.EntireOrder;
 
 public class SpecialDiscount implements Event {
     private static final String SPECIAL_EVENT = "특별 할인";
+    private static final int DISCOUNT_AMOUNT = 1_000;
 
     @Override
     public boolean isEligible(EntireOrder orders, Day day) {
@@ -21,6 +22,6 @@ public class SpecialDiscount implements Event {
         if (isEligible(orders, day)) {
             return 0;
         }
-        return 1000;
+        return DISCOUNT_AMOUNT;
     }
 }

@@ -5,6 +5,7 @@ import christmas.model.order.EntireOrder;
 
 public class WeekendDiscountEvent implements Event {
     private static final String WEEKEND_DISCOUNT_EVENT = "주말 할인";
+    private static final int DISCOUNT_MULTIPLIER = 2023;
 
     @Override
     public boolean isEligible(EntireOrder orders, Day day) {
@@ -21,6 +22,6 @@ public class WeekendDiscountEvent implements Event {
         if (isEligible(orders, day)) {
             return 0;
         }
-        return (int) orders.countMaindish() * 2023;
+        return (int) orders.countMaindish() * DISCOUNT_MULTIPLIER;
     }
 }
