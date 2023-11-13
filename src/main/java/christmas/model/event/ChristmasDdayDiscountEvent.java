@@ -1,6 +1,7 @@
 package christmas.model.event;
 
 import christmas.model.day.Day;
+import christmas.model.day.December2023;
 import christmas.model.order.EntireOrder;
 
 public class ChristmasDdayDiscountEvent implements Event {
@@ -8,7 +9,7 @@ public class ChristmasDdayDiscountEvent implements Event {
 
     @Override
     public boolean isEligible(EntireOrder orders, Day day) {
-        return Event.isEligibleForEntireEvent(orders) && !day.isDayAfter(25);
+        return Event.isEligibleForEntireEvent(orders) && !day.isDayAfter(new December2023(25));
     }
 
     @Override

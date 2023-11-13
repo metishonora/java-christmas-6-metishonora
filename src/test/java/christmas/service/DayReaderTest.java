@@ -41,7 +41,7 @@ class DayReaderTest {
     @ValueSource(strings = {"1", "10", "31"})
     @ParameterizedTest
     void normalDate(String input) {
-        assertThat(DayReader.readDay(input))
+        assertThat(DayReader.readDay(input).getDay())
                 .isEqualTo(Integer.parseInt(input));
     }
 }
