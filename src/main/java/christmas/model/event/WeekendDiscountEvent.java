@@ -8,7 +8,7 @@ public class WeekendDiscountEvent implements Event {
 
     @Override
     public boolean isEligible(EntireOrder orders, Day day) {
-        return Event.isEligibleForEntireEvent(orders) && !day.isWeekday();
+        return Event.isEligibleForEntireEvent(orders) && day.isWeekend();
     }
 
     @Override

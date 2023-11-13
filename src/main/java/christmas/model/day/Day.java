@@ -1,7 +1,7 @@
 package christmas.model.day;
 
 public interface Day {
-    boolean isWeekday();
+    boolean isWeekend();
 
     boolean isDayAfter(Integer another);
 
