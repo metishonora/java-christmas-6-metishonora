@@ -7,5 +7,5 @@ public interface Day {
 
     boolean isSpecialDay();
 
-    Integer getDay();
+    Integer day();
 }

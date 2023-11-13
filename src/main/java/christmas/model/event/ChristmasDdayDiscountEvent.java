@@ -24,6 +24,6 @@ public class ChristmasDdayDiscountEvent implements Event {
         if (!isEligible(orders, day)) {
             return 0;
         }
-        return BASIC_DISCOUNT + (day.getDay() - 1) * ADDED_EACH_DAY;
+        return BASIC_DISCOUNT + (day.day() - 1) * ADDED_EACH_DAY;
     }
 }
