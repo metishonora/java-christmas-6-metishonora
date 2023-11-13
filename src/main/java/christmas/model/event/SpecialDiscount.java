@@ -19,7 +19,7 @@ public class SpecialDiscount implements Event {
 
     @Override
     public Integer getEventBenefitAmount(EntireOrder orders, Day day) {
-        if (isEligible(orders, day)) {
+        if (!isEligible(orders, day)) {
             return 0;
         }
         return DISCOUNT_AMOUNT;

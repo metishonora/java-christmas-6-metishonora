@@ -19,9 +19,9 @@ public class WeekendDiscountEvent implements Event {
 
     @Override
     public Integer getEventBenefitAmount(EntireOrder orders, Day day) {
-        if (isEligible(orders, day)) {
+        if (!isEligible(orders, day)) {
             return 0;
         }
-        return (int) orders.countMaindish() * DISCOUNT_MULTIPLIER;
+        return orders.countMaindish() * DISCOUNT_MULTIPLIER;
     }
 }
