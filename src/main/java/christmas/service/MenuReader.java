@@ -17,6 +17,7 @@ public class MenuReader {
     private static final String MENU_EXCEPTION = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
     private static final String MENU_SEPARATOR = "-";
     private static final String ORDER_SEPARATOR = ",";
+    private static final String ORDER_PATTERN = "^(.+-\\d+,)*.+-\\d+$";
     private static final Integer MAX_ORDER = 20;
 
     public static Menu readMenuName(String line) {
@@ -52,10 +53,7 @@ public class MenuReader {
     }
 
     public static EntireOrder readOrders(String line) {
-        String pattern = "^(.+-\\d+,)*.+-\\d+$";
-        if (!line.matches(pattern)) {
-            throw new IllegalArgumentException(MENU_EXCEPTION);
-        }
+        validatePattern(line);
 
         List<Order> orders = Arrays.stream(line.split(ORDER_SEPARATOR))
                 .map(MenuReader::readSingleOrder)
@@ -66,6 +64,12 @@ public class MenuReader {
         validateOrdersWithNonDrink(orders);
 
         return new EntireOrder(orders);
+    }
+
+    private static void validatePattern(String line) {
+        if (!line.matches(ORDER_PATTERN)) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
     }
 
     private static void validateOrdersWithNonDrink(List<Order> orders) {
