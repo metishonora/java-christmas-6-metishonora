@@ -59,6 +59,18 @@ public class EventChecker {
 
     public EventDto createDto(EntireOrder orders, Day day) {
         List<String> giveawayEventResult = checkGiveawayEvent(orders, day);
+        EventNameAndAmountMapper mapper = getEventNameAndAmountMapper(orders, day);
+
+        return new EventDto(giveawayEventResult,
+                mapper.eventList(),
+                mapper.benefitAmount(),
+                mapper.eventList().size(),
+                calculateTotalBenefitOf(orders, day),
+                calculateFinalPrice(orders, day),
+                checkBadge(orders, day).getName());
+    }
+
+    private EventNameAndAmountMapper getEventNameAndAmountMapper(EntireOrder orders, Day day) {
         Map<String, Integer> eventResults = events.stream()
                 .collect(Collectors.toMap(Event::getEventName, i -> i.getEventBenefitAmount(orders, day)));
         List<String> eventList = new ArrayList<>();
@@ -70,13 +82,9 @@ public class EventChecker {
                 benefitAmount.add(entry.getValue());
             }
         }
+        return new EventNameAndAmountMapper(eventList, benefitAmount);
+    }
 
-        return new EventDto(giveawayEventResult,
-                eventList,
-                benefitAmount,
-                eventList.size(),
-                calculateTotalBenefitOf(orders, day),
-                calculateFinalPrice(orders, day),
-                checkBadge(orders, day).getName());
+    private record EventNameAndAmountMapper(List<String> eventList, List<Integer> benefitAmount) {
     }
 }
