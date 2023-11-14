@@ -8,7 +8,6 @@ import java.util.Optional;
 public class DayReader {
     private static final String DATE_EXCEPTION = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
 
-    // TODO: December2023 클래스 맵핑을 config에 위임
     public static Day readDay(String line) {
         try {
             return new December2023(Optional.ofNullable(line)

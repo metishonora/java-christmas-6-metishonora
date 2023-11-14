@@ -31,7 +31,6 @@ public class OutputView {
         return instance;
     }
 
-    // TODO: December2023의 맵핑을 config에 위임하기
     public void printWelcome() {
         System.out.printf(WELCOME_MSG + System.lineSeparator(), December2023.MONTH);
     }
@@ -97,7 +96,6 @@ public class OutputView {
         System.out.printf(PRICE, eventDto.finalPrice());
     }
 
-    // TODO: December2023의 맵핑을 config에 위임하기
     private void printBadge(EventDto eventDto) {
         System.out.printf(RESULT_BADGE + System.lineSeparator(), December2023.MONTH);
         System.out.println(eventDto.badgeName());

@@ -22,7 +22,6 @@ public class InputView {
         return instance;
     }
 
-    // TODO: December2023의 맵핑 config에 위임하기
     public Day requestDayOfVisit() {
         System.out.printf(REQUEST_VISIT_DATE + System.lineSeparator(), December2023.MONTH);
         return tryUntilSuccessDay();
