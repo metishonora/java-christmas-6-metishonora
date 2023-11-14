@@ -10,7 +10,10 @@ import christmas.model.event.SpecialDiscount;
 import christmas.model.event.WeekdayDiscountEvent;
 import christmas.model.event.WeekendDiscountEvent;
 import christmas.model.order.EntireOrder;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EventChecker {
     private final List<Event> events;
@@ -46,20 +49,25 @@ public class EventChecker {
 
     public EventDto createDto(EntireOrder orders, Day day) {
         String giveawayEventResult = checkGiveawayEvent(orders, day);
-        List<String> eventList = events.stream()
-                .map(Event::getEventName)
-                .toList();
-        List<Integer> benefitAmount = events.stream()
-                .map(i -> i.getEventBenefitAmount(orders, day))
-                .toList();
+        Map<String, Integer> eventResults = events.stream()
+                .collect(Collectors.toMap(Event::getEventName, i -> i.getEventBenefitAmount(orders, day)));
+
+        List<String> eventList = new ArrayList<>();
+        List<Integer> benefitAmount = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : eventResults.entrySet()) {
+            if (entry.getValue() > 0) {
+                eventList.add(entry.getKey());
+                benefitAmount.add(entry.getValue());
+            }
+        }
 
         return new EventDto(giveawayEventResult,
                 eventList,
                 benefitAmount,
-                events.size(),
+                eventList.size(),
                 calculateTotalBenefitOf(orders, day),
                 calculateFinalPrice(orders, day),
-                checkBadge(orders, day).getName()
-        );
+                checkBadge(orders, day).getName());
     }
 }

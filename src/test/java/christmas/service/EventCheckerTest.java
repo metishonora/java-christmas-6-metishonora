@@ -2,6 +2,7 @@ package christmas.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import christmas.dto.EventDto;
 import christmas.model.day.Day;
 import christmas.model.order.EntireOrder;
 import java.util.stream.Stream;
@@ -42,6 +43,14 @@ class EventCheckerTest {
         );
     }
 
+    private static Stream<Arguments> testEventDto() {
+        return Stream.of(
+                Arguments.of("타파스-1,제로콜라-1", "26", "없음", "0", "0", "8500"),
+                Arguments.of("티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1",
+                        "3", "샴페인 1개", "4", "31246", "135754")
+        );
+    }
+
     @DisplayName("총 혜택 금액")
     @MethodSource("totalBenefitTestArgs")
     @ParameterizedTest
@@ -73,5 +82,22 @@ class EventCheckerTest {
         EventChecker eventChecker = new EventChecker();
         assertThat(eventChecker.checkBadge(order, day).getName())
                 .isEqualTo(answer);
+    }
+
+    @DisplayName("EventDto 작성 확인")
+    @MethodSource("testEventDto")
+    @ParameterizedTest
+    void createDto(String entireOrder, String givenDay, String giveaway, Integer logCount, Integer totalBenefit,
+                   Integer finalPrice) {
+        EntireOrder order = MenuReader.readOrders(entireOrder);
+        Day day = DayReader.readDay(givenDay);
+        EventChecker eventChecker = new EventChecker();
+        EventDto eventDto = eventChecker.createDto(order, day);
+
+        assertThat(eventDto.giveAwayEventResult()).isEqualTo(giveaway);
+        assertThat(eventDto.totalBenefit()).isEqualTo(totalBenefit);
+        assertThat(eventDto.eventList().size()).isEqualTo(logCount);
+        assertThat(eventDto.totalBenefit()).isEqualTo(totalBenefit);
+        assertThat(eventDto.finalPrice()).isEqualTo(finalPrice);
     }
 }
