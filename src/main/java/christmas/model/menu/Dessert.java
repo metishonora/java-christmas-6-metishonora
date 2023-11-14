@@ -4,7 +4,6 @@ public enum Dessert implements Menu {
     CHOCOLATE_CAKE("초코케이크", 15000),
     ICECREAM("아이스크림", 5000);
 
-
     private final String name;
     private final int price;
 
