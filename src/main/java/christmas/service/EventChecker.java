@@ -34,6 +34,7 @@ public class EventChecker {
         return events.stream()
                 .filter(event -> event instanceof GiveawayEvent)
                 .map(event -> ((GiveawayEvent) event).giveawayEventResult(orders, day))
+                .filter(result -> !result.isEmpty())
                 .collect(Collectors.toList());
     }
 

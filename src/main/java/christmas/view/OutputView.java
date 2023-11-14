@@ -60,12 +60,16 @@ public class OutputView {
 
     private void printGiveawayEventResult(EventDto eventDto) {
         System.out.println(RESULT_GIVEAWAY_EVENT);
-        System.out.println(eventDto.giveAwayEventResult());
+        String result = eventDto.giveAwayEventResult().stream()
+                .reduce((first, second) -> first + System.lineSeparator() + second)
+                .orElse("없음");
+        System.out.println(result);
     }
 
     private void printEventLog(EventDto eventDto) {
         System.out.println(RESULT_EVENT_LOG);
         IntStream.range(0, eventDto.count())
+                .filter(i -> !eventDto.benefitAmount().get(i).equals(0))
                 .forEach(i -> System.out.printf(EVENT_LOG, eventDto.eventList().get(i),
                         eventDto.benefitAmount().get(i)));
     }
