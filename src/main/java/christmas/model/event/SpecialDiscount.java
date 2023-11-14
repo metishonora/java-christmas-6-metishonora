@@ -3,7 +3,7 @@ package christmas.model.event;
 import christmas.model.day.Day;
 import christmas.model.order.EntireOrder;
 
-public class SpecialDiscount implements Event {
+public class SpecialDiscount implements DiscountEvent {
     private static final String SPECIAL_EVENT = "특별 할인";
     private static final int DISCOUNT_AMOUNT = 1_000;
 

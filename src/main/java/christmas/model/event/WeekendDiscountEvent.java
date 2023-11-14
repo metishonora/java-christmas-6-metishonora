@@ -3,7 +3,7 @@ package christmas.model.event;
 import christmas.model.day.Day;
 import christmas.model.order.EntireOrder;
 
-public class WeekendDiscountEvent implements Event {
+public class WeekendDiscountEvent implements DiscountEvent {
     private static final String WEEKEND_DISCOUNT_EVENT = "주말 할인";
     private static final int DISCOUNT_MULTIPLIER = 2023;
 

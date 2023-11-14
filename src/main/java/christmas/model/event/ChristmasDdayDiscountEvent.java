@@ -4,7 +4,7 @@ import christmas.model.day.Day;
 import christmas.model.day.December2023;
 import christmas.model.order.EntireOrder;
 
-public class ChristmasDdayDiscountEvent implements Event {
+public class ChristmasDdayDiscountEvent implements DiscountEvent {
     private static final String CHRISTMAS_DDAY_DISCOUNT_EVENT = "크리스마스 디데이 할인";
     private static final int BASIC_DISCOUNT = 1_000;
     private static final int ADDED_EACH_DAY = 100;
