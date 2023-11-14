@@ -5,7 +5,9 @@ import christmas.model.badge.Badge;
 import christmas.model.day.Day;
 import christmas.model.event.ChampagneGiveawayEvent;
 import christmas.model.event.ChristmasDdayDiscountEvent;
+import christmas.model.event.DiscountEvent;
 import christmas.model.event.Event;
+import christmas.model.event.GiveawayEvent;
 import christmas.model.event.SpecialDiscount;
 import christmas.model.event.WeekdayDiscountEvent;
 import christmas.model.event.WeekendDiscountEvent;
@@ -28,9 +30,11 @@ public class EventChecker {
                 new WeekendDiscountEvent());
     }
 
-    public String checkGiveawayEvent(EntireOrder orders, Day day) {
-        // 주의: 이벤트 구현체의 순서가 변경될 경우, 이 메서드의 인덱스도 변경되어야 합니다.
-        return ((ChampagneGiveawayEvent) events.get(0)).giveAwayEventResult(orders, day);
+    public List<String> checkGiveawayEvent(EntireOrder orders, Day day) {
+        return events.stream()
+                .filter(event -> event instanceof GiveawayEvent)
+                .map(event -> ((GiveawayEvent) event).giveawayEventResult(orders, day))
+                .collect(Collectors.toList());
     }
 
     public Integer calculateTotalBenefitOf(EntireOrder orders, Day day) {
@@ -40,7 +44,12 @@ public class EventChecker {
     }
 
     public Integer calculateFinalPrice(EntireOrder orders, Day day) {
-        return orders.calculateEntirePrice() - calculateTotalBenefitOf(orders, day);
+        int totalDiscount = events.stream()
+                .filter(event -> event instanceof DiscountEvent)
+                .mapToInt(event -> event.getEventBenefitAmount(orders, day))
+                .sum();
+
+        return orders.calculateEntirePrice() - totalDiscount;
     }
 
     public Badge checkBadge(EntireOrder orders, Day day) {
@@ -48,10 +57,9 @@ public class EventChecker {
     }
 
     public EventDto createDto(EntireOrder orders, Day day) {
-        String giveawayEventResult = checkGiveawayEvent(orders, day);
+        List<String> giveawayEventResult = checkGiveawayEvent(orders, day);
         Map<String, Integer> eventResults = events.stream()
                 .collect(Collectors.toMap(Event::getEventName, i -> i.getEventBenefitAmount(orders, day)));
-
         List<String> eventList = new ArrayList<>();
         List<Integer> benefitAmount = new ArrayList<>();
 

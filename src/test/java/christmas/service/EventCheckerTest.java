@@ -26,11 +26,11 @@ class EventCheckerTest {
     private static Stream<Arguments> finalPriceTestArgs() {
         return Stream.of(
                 Arguments.of("타파스-1,제로콜라-1", "26", "8500"),
-                Arguments.of("티본스테이크-1,제로콜라-1,초코케이크-2,바비큐립-1", "3", "110754"),
+                Arguments.of("티본스테이크-1,제로콜라-1,초코케이크-2,바비큐립-1", "3", "135754"),
                 Arguments.of("바비큐립-1,초코케이크-2,아이스크림-3", "25", "84485"),  // 디데이, 평일, 특별
                 Arguments.of("바비큐립-1,레드와인-1", "16", "109477"),  // 디데이, 주말
-                Arguments.of("티본스테이크-4,아이스크림-3", "28", "203931"),  // 증정, 평일
-                Arguments.of("티본스테이크-4", "29", "186908")  // 증정, 주말
+                Arguments.of("티본스테이크-4,아이스크림-3", "28", "228931"),  // 증정, 평일
+                Arguments.of("티본스테이크-4", "29", "211908")  // 증정, 주말
         );
     }
 
@@ -45,9 +45,9 @@ class EventCheckerTest {
 
     private static Stream<Arguments> testEventDto() {
         return Stream.of(
-                Arguments.of("타파스-1,제로콜라-1", "26", "없음", "0", "0", "8500"),
+                Arguments.of("타파스-1,제로콜라-1", "26", "[]", "0", "0", "8500"),
                 Arguments.of("티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1",
-                        "3", "샴페인 1개", "4", "31246", "135754")
+                        "3", "[샴페인 1개]", "4", "31246", "135754")
         );
     }
 
@@ -94,7 +94,7 @@ class EventCheckerTest {
         EventChecker eventChecker = new EventChecker();
         EventDto eventDto = eventChecker.createDto(order, day);
 
-        assertThat(eventDto.giveAwayEventResult()).isEqualTo(giveaway);
+        assertThat(eventDto.giveAwayEventResult().toString()).isEqualTo(giveaway);
         assertThat(eventDto.totalBenefit()).isEqualTo(totalBenefit);
         assertThat(eventDto.eventList().size()).isEqualTo(logCount);
         assertThat(eventDto.totalBenefit()).isEqualTo(totalBenefit);

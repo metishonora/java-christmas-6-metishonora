@@ -3,7 +3,7 @@ package christmas.dto;
 import java.util.List;
 
 public record EventDto(
-        String giveAwayEventResult,
+        List<String> giveAwayEventResult,
         List<String> eventList,
         List<Integer> benefitAmount,
         int count,
