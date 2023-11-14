@@ -63,7 +63,7 @@ class MenuReaderTest {
     }
 
     @DisplayName("입력 형식이 다른 주문")
-    @ValueSource(strings = {"양송이수프-1-2", "초코케이크 1", "-1", "5-바비큐립", "제로콜라--10", "제로콜라-"})
+    @ValueSource(strings = {"양송이수프-1-2", "초코케이크 1", "-1", "5-바비큐립", "제로콜라--10", "제로콜라-", "타파스-1,,,"})
     @ParameterizedTest
     void illegalFormatOrder(String input) {
         assertThatThrownBy(() -> MenuReader.readSingleOrder(input))

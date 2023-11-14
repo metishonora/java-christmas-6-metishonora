@@ -9,6 +9,7 @@ import christmas.model.order.EntireOrder;
 import christmas.model.order.Order;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -33,7 +34,7 @@ public class MenuReader {
             return Optional.of(Integer.parseInt(token))
                     .filter(i -> i > 0)
                     .orElseThrow();
-        } catch (NumberFormatException e) {
+        } catch (NoSuchElementException | NumberFormatException e) {
             throw new IllegalArgumentException(MENU_EXCEPTION);
         }
     }
@@ -51,6 +52,11 @@ public class MenuReader {
     }
 
     public static EntireOrder readOrders(String line) {
+        String pattern = "^(.+-\\d+,)*.+-\\d+$";
+        if (!line.matches(pattern)) {
+            throw new IllegalArgumentException(MENU_EXCEPTION);
+        }
+
         List<Order> orders = Arrays.stream(line.split(ORDER_SEPARATOR))
                 .map(MenuReader::readSingleOrder)
                 .toList();
