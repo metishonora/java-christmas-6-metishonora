@@ -1,5 +1,0 @@
-package christmas;
-
-class LogicTest {
-
-}

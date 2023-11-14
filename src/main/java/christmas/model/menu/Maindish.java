@@ -1,7 +1,5 @@
 package christmas.model.menu;
 
-import java.util.Arrays;
-
 public enum Maindish implements Menu {
     TBONE_STEAK("티본스테이크", 55000),
     BBQ_RIBS("바비큐립", 54000),
@@ -15,12 +13,6 @@ public enum Maindish implements Menu {
     Maindish(String name, int price) {
         this.name = name;
         this.price = price;
-    }
-
-    @Override
-    public boolean contains(String line) {
-        return Arrays.stream(Maindish.values())
-                .anyMatch(i -> i.getName().equals(line));
     }
 
     @Override

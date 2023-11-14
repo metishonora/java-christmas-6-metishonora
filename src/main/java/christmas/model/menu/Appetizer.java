@@ -1,7 +1,5 @@
 package christmas.model.menu;
 
-import java.util.Arrays;
-
 public enum Appetizer implements Menu {
     MUSHROOM_SOUP("양송이수프", 6000),
     TAPAS("타파스", 5500),
@@ -13,12 +11,6 @@ public enum Appetizer implements Menu {
     Appetizer(String name, int price) {
         this.name = name;
         this.price = price;
-    }
-
-    @Override
-    public boolean contains(String line) {
-        return Arrays.stream(Appetizer.values())
-                .anyMatch(i -> i.getName().equals(line));
     }
 
     @Override
